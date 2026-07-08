@@ -1,0 +1,9 @@
+site/node_modules/
+site/dist/
+site/.npm-cache/
+.venv-image/
+reference/
+itinerary/
+site/src/assets/sakura-source.png
+site/design-qa.md
+*.log
