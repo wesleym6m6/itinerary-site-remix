@@ -1,10 +1,10 @@
-// Generated from itinerary/sheet.csv on 2026-07-08. Edit the sheet source or regenerate for bulk changes.
+// Generated from itinerary/sheet.csv on 2026-07-10. Edit the sheet source or regenerate for bulk changes.
 export const tripMeta = {
   "title": "東京・苗場・越後妻有 11 日自由行",
   "kicker": "旅遊行程規劃",
   "subtitle": "羽田 · 苗場 · 越後湯澤 · 十日町 · 蒲田 · 橫濱 · 東京",
   "range": "2026.07.22 - 2026.08.01",
-  "sourceUrl": "https://docs.google.com/spreadsheets/d/1FA-TFi4Jg3-2cBay77GFwbbjE-pivIVc4JTLHqpgLLI/edit?usp=share_link"
+  "sourceUrl": "https://docs.google.com/spreadsheets/d/1FA-TFi4Jg3-2cBay77GFwbbjE-pivIVc4JTLHqpgLLI/edit?usp=sharing"
 };
 
 export const itineraryDays = [
@@ -143,7 +143,7 @@ export const itineraryDays = [
         "time": "10:00–11:00",
         "type": "transport",
         "icon": "fa-train",
-        "title": "東京車站集合",
+        "title": "東京車站集合 & 咖啡廳",
         "desc": "*跟曼達快閃見面*",
         "badges": [
           {
@@ -694,7 +694,8 @@ export const itineraryDays = [
     "city": "橫濱・東京",
     "accommodation": "NESTo KAMATA",
     "notes": [
-      "鄭抵達"
+      "鄭抵達",
+      "葉山女子旅套票"
     ],
     "events": [
       {
@@ -726,10 +727,24 @@ export const itineraryDays = [
         ]
       },
       {
+        "time": "08:00–09:00",
+        "type": "transport",
+        "icon": "fa-train",
+        "title": "京急本線到逗子・葉山站 (~1hr)",
+        "desc": "",
+        "badges": [
+          {
+            "cls": "transport",
+            "icon": "fa-train",
+            "text": "交通"
+          }
+        ]
+      },
+      {
         "time": "10:00–11:00",
         "type": "sight",
         "icon": "fa-camera",
-        "title": "要去葉山/逗子嗎",
+        "title": "逗子海水浴場玩水",
         "desc": "",
         "badges": [
           {
@@ -740,10 +755,10 @@ export const itineraryDays = [
         ]
       },
       {
-        "time": "13:00–14:00",
+        "time": "11:00–12:00",
         "type": "food",
         "icon": "fa-utensils",
-        "title": "吃個午餐",
+        "title": "找個套票餐廳吃午餐",
         "desc": "",
         "badges": [
           {
@@ -754,16 +769,30 @@ export const itineraryDays = [
         ]
       },
       {
-        "time": "14:00–15:00",
-        "type": "show",
-        "icon": "fa-music",
-        "title": "體育館組跟橫濱晃晃組",
+        "time": "13:00–14:00",
+        "type": "sight",
+        "icon": "fa-camera",
+        "title": "散步拍照：森戶神社/真名瀨海岸/一色海岸",
         "desc": "",
         "badges": [
           {
-            "cls": "show",
-            "icon": "fa-music",
-            "text": "演出"
+            "cls": "sight",
+            "icon": "fa-camera",
+            "text": "景點"
+          }
+        ]
+      },
+      {
+        "time": "15:00–16:00",
+        "type": "transport",
+        "icon": "fa-train",
+        "title": "Day1組出發橫濱體育館",
+        "desc": "從逗子站搭車~1hr\nDay2組看要不要看夕陽",
+        "badges": [
+          {
+            "cls": "transport",
+            "icon": "fa-train",
+            "text": "交通"
           }
         ]
       },
@@ -853,11 +882,11 @@ export const itineraryDays = [
         ]
       },
       {
-        "time": "10:00–11:00",
+        "time": "09:00–10:00",
         "type": "story",
         "icon": "fa-leaf",
         "title": "看要去哪裡",
-        "desc": "",
+        "desc": "橫濱一日遊、進城逛街、...",
         "badges": [
           {
             "cls": "story",
@@ -867,30 +896,16 @@ export const itineraryDays = [
         ]
       },
       {
-        "time": "13:00–14:00",
-        "type": "food",
-        "icon": "fa-utensils",
-        "title": "吃個午餐",
+        "time": "16:00–17:00",
+        "type": "transport",
+        "icon": "fa-train",
+        "title": "Day2組出發橫濱體育館",
         "desc": "",
         "badges": [
           {
-            "cls": "food",
-            "icon": "fa-utensils",
-            "text": "餐飲"
-          }
-        ]
-      },
-      {
-        "time": "14:00–15:00",
-        "type": "show",
-        "icon": "fa-music",
-        "title": "體育館組跟橫濱晃晃組",
-        "desc": "",
-        "badges": [
-          {
-            "cls": "show",
-            "icon": "fa-music",
-            "text": "演出"
+            "cls": "transport",
+            "icon": "fa-train",
+            "text": "交通"
           }
         ]
       },
@@ -966,11 +981,11 @@ export const itineraryDays = [
         ]
       },
       {
-        "time": "10:00–11:00",
+        "time": "09:00–10:00",
         "type": "buy",
         "icon": "fa-shopping-bag",
         "title": "進城逛街",
-        "desc": "",
+        "desc": "自由活動",
         "badges": [
           {
             "cls": "buy",
@@ -980,10 +995,24 @@ export const itineraryDays = [
         ]
       },
       {
+        "time": "18:00–19:00",
+        "type": "food",
+        "icon": "fa-utensils",
+        "title": "晚餐 & 前往晴空塔",
+        "desc": "",
+        "badges": [
+          {
+            "cls": "food",
+            "icon": "fa-utensils",
+            "text": "餐飲"
+          }
+        ]
+      },
+      {
         "time": "20:00–21:00",
         "type": "show",
         "icon": "fa-music",
-        "title": "Regal Lily \"LIVE in the DARK\" at K...",
+        "title": "Regal Lily \"LIVE in the DARK\" at Konica Minolta 天文館",
         "desc": "20:00 Open 20:30 Start",
         "badges": [
           {
@@ -1053,11 +1082,11 @@ export const itineraryDays = [
         ]
       },
       {
-        "time": "10:00–11:00",
+        "time": "09:00–10:00",
         "type": "buy",
         "icon": "fa-shopping-bag",
         "title": "進城逛街",
-        "desc": "",
+        "desc": "自由活動",
         "badges": [
           {
             "cls": "buy",
@@ -1072,6 +1101,20 @@ export const itineraryDays = [
         "icon": "fa-shopping-bag",
         "title": "11:00 Miyoshi Rug",
         "desc": "",
+        "badges": [
+          {
+            "cls": "buy",
+            "icon": "fa-shopping-bag",
+            "text": "購物"
+          }
+        ]
+      },
+      {
+        "time": "12:00–13:00",
+        "type": "buy",
+        "icon": "fa-shopping-bag",
+        "title": "進城逛街",
+        "desc": "自由活動",
         "badges": [
           {
             "cls": "buy",
@@ -1287,7 +1330,7 @@ export const tripCollections = {
       "time": "10:00–11:00",
       "type": "transport",
       "icon": "fa-train",
-      "title": "東京車站集合",
+      "title": "東京車站集合 & 咖啡廳",
       "desc": "*跟曼達快閃見面*",
       "badges": [
         {
@@ -1418,6 +1461,57 @@ export const tripCollections = {
       "dateLabel": "7月28日"
     },
     {
+      "time": "08:00–09:00",
+      "type": "transport",
+      "icon": "fa-train",
+      "title": "京急本線到逗子・葉山站 (~1hr)",
+      "desc": "",
+      "badges": [
+        {
+          "cls": "transport",
+          "icon": "fa-train",
+          "text": "交通"
+        }
+      ],
+      "date": "2026-07-29",
+      "dayTitle": "Yorushika 橫濱演出日",
+      "dateLabel": "7月29日"
+    },
+    {
+      "time": "15:00–16:00",
+      "type": "transport",
+      "icon": "fa-train",
+      "title": "Day1組出發橫濱體育館",
+      "desc": "從逗子站搭車~1hr\nDay2組看要不要看夕陽",
+      "badges": [
+        {
+          "cls": "transport",
+          "icon": "fa-train",
+          "text": "交通"
+        }
+      ],
+      "date": "2026-07-29",
+      "dayTitle": "Yorushika 橫濱演出日",
+      "dateLabel": "7月29日"
+    },
+    {
+      "time": "16:00–17:00",
+      "type": "transport",
+      "icon": "fa-train",
+      "title": "Day2組出發橫濱體育館",
+      "desc": "",
+      "badges": [
+        {
+          "cls": "transport",
+          "icon": "fa-train",
+          "text": "交通"
+        }
+      ],
+      "date": "2026-07-30",
+      "dayTitle": "Yorushika 第二日與東京備案",
+      "dateLabel": "7月30日"
+    },
+    {
       "time": "20:00–21:00",
       "type": "flight",
       "icon": "fa-plane",
@@ -1505,23 +1599,6 @@ export const tripCollections = {
       "dateLabel": "7月26日"
     },
     {
-      "time": "14:00–15:00",
-      "type": "show",
-      "icon": "fa-music",
-      "title": "體育館組跟橫濱晃晃組",
-      "desc": "",
-      "badges": [
-        {
-          "cls": "show",
-          "icon": "fa-music",
-          "text": "演出"
-        }
-      ],
-      "date": "2026-07-29",
-      "dayTitle": "Yorushika 橫濱演出日",
-      "dateLabel": "7月29日"
-    },
-    {
       "time": "18:00–19:00",
       "type": "show",
       "icon": "fa-music",
@@ -1539,27 +1616,10 @@ export const tripCollections = {
       "dateLabel": "7月29日"
     },
     {
-      "time": "14:00–15:00",
-      "type": "show",
-      "icon": "fa-music",
-      "title": "體育館組跟橫濱晃晃組",
-      "desc": "",
-      "badges": [
-        {
-          "cls": "show",
-          "icon": "fa-music",
-          "text": "演出"
-        }
-      ],
-      "date": "2026-07-30",
-      "dayTitle": "Yorushika 第二日與東京備案",
-      "dateLabel": "7月30日"
-    },
-    {
       "time": "20:00–21:00",
       "type": "show",
       "icon": "fa-music",
-      "title": "Regal Lily \"LIVE in the DARK\" at K...",
+      "title": "Regal Lily \"LIVE in the DARK\" at Konica Minolta 天文館",
       "desc": "20:00 Open 20:30 Start",
       "badges": [
         {
@@ -1756,7 +1816,7 @@ export const tripCollections = {
       "time": "10:00–11:00",
       "type": "sight",
       "icon": "fa-camera",
-      "title": "要去葉山/逗子嗎",
+      "title": "逗子海水浴場玩水",
       "desc": "",
       "badges": [
         {
@@ -1770,10 +1830,44 @@ export const tripCollections = {
       "dateLabel": "7月29日"
     },
     {
-      "time": "13:00–14:00",
+      "time": "11:00–12:00",
       "type": "food",
       "icon": "fa-utensils",
-      "title": "吃個午餐",
+      "title": "找個套票餐廳吃午餐",
+      "desc": "",
+      "badges": [
+        {
+          "cls": "food",
+          "icon": "fa-utensils",
+          "text": "餐飲"
+        }
+      ],
+      "date": "2026-07-29",
+      "dayTitle": "Yorushika 橫濱演出日",
+      "dateLabel": "7月29日"
+    },
+    {
+      "time": "13:00–14:00",
+      "type": "sight",
+      "icon": "fa-camera",
+      "title": "散步拍照：森戶神社/真名瀨海岸/一色海岸",
+      "desc": "",
+      "badges": [
+        {
+          "cls": "sight",
+          "icon": "fa-camera",
+          "text": "景點"
+        }
+      ],
+      "date": "2026-07-29",
+      "dayTitle": "Yorushika 橫濱演出日",
+      "dateLabel": "7月29日"
+    },
+    {
+      "time": "22:00–23:00",
+      "type": "food",
+      "icon": "fa-utensils",
+      "title": "晚餐 or 回蒲田",
       "desc": "",
       "badges": [
         {
@@ -1799,50 +1893,16 @@ export const tripCollections = {
           "text": "餐飲"
         }
       ],
-      "date": "2026-07-29",
-      "dayTitle": "Yorushika 橫濱演出日",
-      "dateLabel": "7月29日"
-    },
-    {
-      "time": "13:00–14:00",
-      "type": "food",
-      "icon": "fa-utensils",
-      "title": "吃個午餐",
-      "desc": "",
-      "badges": [
-        {
-          "cls": "food",
-          "icon": "fa-utensils",
-          "text": "餐飲"
-        }
-      ],
       "date": "2026-07-30",
       "dayTitle": "Yorushika 第二日與東京備案",
       "dateLabel": "7月30日"
     },
     {
-      "time": "22:00–23:00",
-      "type": "food",
-      "icon": "fa-utensils",
-      "title": "晚餐 or 回蒲田",
-      "desc": "",
-      "badges": [
-        {
-          "cls": "food",
-          "icon": "fa-utensils",
-          "text": "餐飲"
-        }
-      ],
-      "date": "2026-07-30",
-      "dayTitle": "Yorushika 第二日與東京備案",
-      "dateLabel": "7月30日"
-    },
-    {
-      "time": "10:00–11:00",
+      "time": "09:00–10:00",
       "type": "buy",
       "icon": "fa-shopping-bag",
       "title": "進城逛街",
-      "desc": "",
+      "desc": "自由活動",
       "badges": [
         {
           "cls": "buy",
@@ -1855,11 +1915,28 @@ export const tripCollections = {
       "dateLabel": "7月31日"
     },
     {
-      "time": "10:00–11:00",
+      "time": "18:00–19:00",
+      "type": "food",
+      "icon": "fa-utensils",
+      "title": "晚餐 & 前往晴空塔",
+      "desc": "",
+      "badges": [
+        {
+          "cls": "food",
+          "icon": "fa-utensils",
+          "text": "餐飲"
+        }
+      ],
+      "date": "2026-07-31",
+      "dayTitle": "東京最後採買與夜間演出",
+      "dateLabel": "7月31日"
+    },
+    {
+      "time": "09:00–10:00",
       "type": "buy",
       "icon": "fa-shopping-bag",
       "title": "進城逛街",
-      "desc": "",
+      "desc": "自由活動",
       "badges": [
         {
           "cls": "buy",
@@ -1877,6 +1954,23 @@ export const tripCollections = {
       "icon": "fa-shopping-bag",
       "title": "11:00 Miyoshi Rug",
       "desc": "",
+      "badges": [
+        {
+          "cls": "buy",
+          "icon": "fa-shopping-bag",
+          "text": "購物"
+        }
+      ],
+      "date": "2026-08-01",
+      "dayTitle": "成田返台與最後整理",
+      "dateLabel": "8月1日"
+    },
+    {
+      "time": "12:00–13:00",
+      "type": "buy",
+      "icon": "fa-shopping-bag",
+      "title": "進城逛街",
+      "desc": "自由活動",
       "badges": [
         {
           "cls": "buy",
@@ -1919,7 +2013,8 @@ export const tripCollections = {
       "date": "7月29日",
       "title": "Yorushika 橫濱演出日",
       "items": [
-        "鄭抵達"
+        "鄭抵達",
+        "葉山女子旅套票"
       ]
     },
     {
