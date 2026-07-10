@@ -3,8 +3,7 @@ export const tripMeta = {
   "title": "東京・苗場・越後妻有 11 日自由行",
   "kicker": "旅遊行程規劃",
   "subtitle": "羽田 · 苗場 · 越後湯澤 · 十日町 · 蒲田 · 橫濱 · 東京",
-  "range": "2026.07.22 - 2026.08.01",
-  "sourceUrl": "https://docs.google.com/spreadsheets/d/1FA-TFi4Jg3-2cBay77GFwbbjE-pivIVc4JTLHqpgLLI/edit?usp=sharing"
+  "range": "2026.07.22 - 2026.08.01"
 };
 
 export const itineraryDays = [
@@ -691,7 +690,7 @@ export const itineraryDays = [
     "sheetLabel": "Yorushika",
     "title": "Yorushika 橫濱演出日",
     "tag": "演出",
-    "city": "橫濱・東京",
+    "city": "逗子・葉山・橫濱・東京",
     "accommodation": "NESTo KAMATA",
     "notes": [
       "鄭抵達",

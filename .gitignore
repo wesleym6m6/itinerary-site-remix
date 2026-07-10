@@ -1,6 +1,8 @@
 site/node_modules/
 site/dist/
 site/.npm-cache/
+site/test-results/
+site/playwright-report/
 .venv-image/
 reference/
 itinerary/
