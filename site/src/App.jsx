@@ -161,7 +161,7 @@ function getOperationalDay(now = new Date()) {
   if (parts.hour >= 5) return parts.date;
   const previousDate = shiftDate(parts.date, -1);
   const previousDay = itineraryDays.find((day) => day.date === previousDate);
-  const hasLateEvent = previousDay?.events.some((event) => (parseEventSlot(event.time)?.start || 0) >= 24 * 60);
+  const hasLateEvent = previousDay?.events.some((event) => (parseEventSlot(event.time)?.end || 0) > 24 * 60);
   return hasLateEvent ? previousDate : parts.date;
 }
 
@@ -203,11 +203,14 @@ function getInitialDayIndex() {
 function formatEventTime(time) {
   const slot = parseEventSlot(time);
   if (!slot) return time;
-  if (slot.start < 24 * 60) return `時段 ${time}`;
   const display = (minutes) => {
     const normalized = minutes - 24 * 60;
     return `${String(Math.floor(normalized / 60)).padStart(2, "0")}:${String(normalized % 60).padStart(2, "0")}`;
   };
+  if (slot.start < 24 * 60 && slot.end >= 24 * 60) {
+    return `時段 ${time.slice(0, 5)}–翌日 ${display(slot.end)}`;
+  }
+  if (slot.start < 24 * 60) return `時段 ${time}`;
   return `翌日 ${display(slot.start)}–${display(slot.end)}`;
 }
 
@@ -490,15 +493,25 @@ function DayCard({ currentIndex, now, onChange }) {
     ? (tokyo.hour + 24) * 60 + tokyo.minute
     : tokyo.hour * 60 + tokyo.minute;
 
-  let activeIndex = -1;
-  let nextIndex = -1;
+  const activeIndexes = new Set();
+  const nextIndexes = new Set();
   if (day.date === operationalDay) {
-    activeIndex = events.findIndex((event) => {
-      const slot = parseEventSlot(event.time);
-      return slot && slot.start <= operationalMinutes && operationalMinutes < slot.end;
+    const slots = events.map((event) => parseEventSlot(event.time));
+    slots.forEach((slot, index) => {
+      if (slot && slot.start <= operationalMinutes && operationalMinutes < slot.end) {
+        activeIndexes.add(index);
+      }
     });
-    if (activeIndex < 0) {
-      nextIndex = events.findIndex((event) => (parseEventSlot(event.time)?.start || -1) > operationalMinutes);
+
+    if (!activeIndexes.size) {
+      const nextStart = Math.min(
+        ...slots
+          .map((slot) => slot?.start)
+          .filter((start) => Number.isFinite(start) && start > operationalMinutes),
+      );
+      slots.forEach((slot, index) => {
+        if (slot?.start === nextStart) nextIndexes.add(index);
+      });
     }
   }
 
@@ -537,7 +550,7 @@ function DayCard({ currentIndex, now, onChange }) {
             event={event}
             index={index}
             key={`${event.time}-${event.title}`}
-            status={index === activeIndex ? "目前排程" : index === nextIndex ? "接下來" : null}
+            status={activeIndexes.has(index) ? "目前排程" : nextIndexes.has(index) ? "接下來" : null}
           />
         ))}
       </div>
@@ -596,9 +609,21 @@ function SummaryItem({ item, onJumpToDay }) {
 }
 
 function getCollectionItems(type) {
+  const showItems = itineraryDays.flatMap((day) => day.events
+    .filter((event) => event.type === "show")
+    .map((event) => ({ ...event, date: day.date, dayTitle: day.title, dateLabel: day.dateLabel })));
+  const eventBookings = itineraryDays.flatMap((day) => day.events
+    .filter((event) => event.badges?.some((badge) => badge.cls === "booking"))
+    .map((event) => ({
+      ...event,
+      date: day.date,
+      dayTitle: day.title,
+      dateLabel: day.dateLabel,
+      meta: event.badges.find((badge) => badge.cls === "booking")?.text,
+    })));
   const source = type === "shows"
-    ? tripCollections.shows
-    : [...tripCollections.bookings, ...tripCollections.shows];
+    ? showItems
+    : [...tripCollections.bookings, ...eventBookings, ...showItems];
   const seen = new Set();
   const items = source
     .map((item) => {

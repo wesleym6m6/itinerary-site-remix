@@ -5,6 +5,7 @@ const officialLinks = {
   echigoDrive: "https://www.echigo-tsumari.jp/visit/satoyamasyokudo_daytrip/",
   echigoPass: "https://www.echigo-tsumari.jp/event/20260425_1108/",
   fujiAccess: "https://fujirockfestival.com/access/index",
+  fujiGoods: "https://www.greenonred.jp/frfgoods_26/index.html",
   fujiInfo: "https://www.fujirockfestival.com/info/index",
   fujiTimetable24: "https://fujirockfestival.com/artist/timetable/24",
   fujiTimetable25: "https://fujirockfestival.com/artist/timetable/25",
@@ -12,10 +13,12 @@ const officialLinks = {
   hayamaTicket: "https://www.keikyu.co.jp/visit/otoku/otoku_hayamagirl/",
   imperialPalace: "https://sankan.kunaicho.go.jp/guide/koukyo.html",
   keikyuHaneda: "https://www.keikyu-exinn.co.jp/en/hotel/haneda/access.html",
-  miyoshiRug: "https://miyoshirug.store/pages/evans-store-visit-reservations-for-overseas-visitors",
+  miyoshiStore: "https://miyoshirug.store/pages/dealer",
   momatExhibition: "https://www.momat.go.jp/exhibitions/569",
   naritaAccess: "https://www.narita-airport.jp/en/access/",
   planetariumTenku: "https://planetarium.konicaminolta.jp/livedark/takahashihonoka/",
+  asicsRun: "https://www.asics.com/jp/ja-jp/mk/store/asicsruntokyo-marunouchi",
+  frierenConcert: "https://frieren-filmconcert.com/",
   yorushika: "https://yorushika.com/feature/livetour2026_ichininsho",
   yokohamaArenaAccess: "https://www.yokohama-arena.co.jp/access/index.html",
 };
@@ -85,7 +88,7 @@ registerMany(
   crystalInnActions,
 );
 
-register("2026-07-23", "東京車站集合 & 咖啡廳", [
+register("2026-07-23", "東京駅集合寄物 & 支線任務：跟曼達快閃見面 (約在八重洲Public)", [
   mapsAction("東京車站", "東京駅"),
 ]);
 
@@ -94,11 +97,11 @@ register("2026-07-23", "12:40~13:56 Toki321号 ¥6700", [
   mapsAction("越後湯澤站", "越後湯沢駅"),
 ]);
 
-register("2026-07-23", "越後湯澤車站補給", [
+register("2026-07-23", "補給@越後湯沢駅", [
   mapsAction("越後湯澤站", "越後湯沢駅"),
 ]);
 
-register("2026-07-23", "*公車 (15:30湯澤~16:07苗場線 ¥700) or 官方接駁車 (¥2000) 皆可", [
+register("2026-07-23", "前往苗場：公車 (15:30湯澤~16:07苗場線 ¥700) or 官方接駁車 (¥2000)", [
   mapsAction("巴士乘車處", "越後湯沢駅 東口 バス乗り場"),
   officialAction("官方接駁", officialLinks.fujiAccess),
 ]);
@@ -116,6 +119,7 @@ register("2026-07-23", "前夜祭", [
   register(date, title, [
     mapsAction("苗場會場", "苗場スキー場"),
     officialAction("官方時刻表", timetable),
+    ...(date === "2026-07-24" ? [officialAction("官方商品資訊", officialLinks.fujiGoods)] : []),
   ]);
 });
 
@@ -126,7 +130,7 @@ const nestoKamataActions = [
 registerMany(
   [
     ["2026-07-27", "住宿：NESTo KAMATA"],
-    ["2026-07-27", "self check in NESTo KAMATA"],
+    ["2026-07-27", "check in NESTo KAMATA"],
     ["2026-07-28", "住宿：NESTo KAMATA"],
     ["2026-07-29", "住宿：NESTo KAMATA"],
     ["2026-07-30", "住宿：NESTo KAMATA"],
@@ -136,12 +140,12 @@ registerMany(
   nestoKamataActions,
 );
 
-register("2026-07-27", "接駁車前往越後湯澤站", [
+register("2026-07-27", "接駁車前往越後湯沢駅", [
   mapsAction("越後湯澤站", "越後湯沢駅"),
   officialAction("接駁資訊", officialLinks.fujiAccess),
 ]);
 
-register("2026-07-27", "Toyota 租車與越後妻有藝術祭路線", [
+register("2026-07-27", "Toyota Rent-A-Car 租車與越後妻有藝術祭路線", [
   mapsAction("Toyota 租車", "トヨタレンタカー 越後湯沢駅前店"),
   officialAction("官方一日自駕範例", officialLinks.echigoDrive),
   officialAction("2026 共通票", officialLinks.echigoPass),
@@ -152,12 +156,17 @@ register("2026-07-27", "19:05~20:12 Toki338 ¥6700", [
   mapsAction("越後湯澤站", "越後湯沢駅"),
 ]);
 
-register("2026-07-27", "京濱東北線到蒲田 or", [
+register("2026-07-27", "轉京濱東北線到蒲田 or", [
   mapsAction("蒲田站", "蒲田駅"),
   mapsAction("京急蒲田站", "京急蒲田駅"),
 ]);
 
-register("2026-07-28", "皇居慢跑", [
+register("2026-07-28", "前往ASICS RUN (~35min)", [
+  mapsAction("ASICS RUN", "ASICS RUN TOKYO MARUNOUCHI"),
+  officialAction("官方資訊", officialLinks.asicsRun),
+]);
+
+register("2026-07-28", "皇居慢跑 & 加油打氣組旁邊喝咖啡", [
   mapsAction("皇居外苑", "皇居外苑"),
 ]);
 
@@ -178,10 +187,7 @@ register("2026-07-29", "京急本線到逗子・葉山站 (~1hr)", [
 
 register("2026-07-29", "逗子海水浴場玩水", [
   mapsAction("海水浴場", "逗子海水浴場"),
-]);
-
-register("2026-07-29", "找個套票餐廳吃午餐", [
-  officialAction("套票餐廳", officialLinks.hayamaTicket),
+  officialAction("套票內容", officialLinks.hayamaTicket),
 ]);
 
 register("2026-07-29", "散步拍照：森戶神社/真名瀨海岸/一色海岸", [
@@ -200,7 +206,10 @@ register("2026-07-29", "Day1組出發橫濱體育館", [
   ...yokohamaArenaActions,
 ]);
 
-register("2026-07-29", "Yorushika\"一人稱\" at 橫濱體育館", [
+registerMany([
+  ["2026-07-29", "Yorushika「一人称」at 橫濱體育館"],
+  ["2026-07-30", "Yorushika「一人称」at 橫濱體育館"],
+], [
   mapsAction("橫濱體育館", "横浜アリーナ"),
   officialAction("演出與票券", officialLinks.yorushika),
   officialAction("場館交通", officialLinks.yokohamaArenaAccess),
@@ -208,27 +217,32 @@ register("2026-07-29", "Yorushika\"一人稱\" at 橫濱體育館", [
 
 register("2026-07-30", "Day2組出發橫濱體育館", yokohamaArenaActions);
 
-register("2026-07-31", "晚餐 & 前往晴空塔", [
+register("2026-07-31", "晚餐 & 彭温前往晴空塔", [
   mapsAction("東京晴空塔", "東京スカイツリー"),
 ]);
 
-register("2026-07-31", "Regal Lily \"LIVE in the DARK\" at Konica Minolta 天文館", [
+register("2026-07-31", "Regal Lily \"LIVE in the DARK\" at Konica Minolta Planetarium Tenku", [
   mapsAction("天文館地圖", "コニカミノルタプラネタリウム天空"),
   officialAction("官方演出資訊", officialLinks.planetariumTenku),
 ]);
 
 register("2026-08-01", "11:00 Miyoshi Rug", [
   mapsAction("EVANS 白金台", "EVANS 白金台 MIYOSHI RUG"),
-  officialAction("來店預約", officialLinks.miyoshiRug),
+  officialAction("來店資訊", officialLinks.miyoshiStore),
 ]);
 
-register("2026-08-01", "前往成田機場", [
+register("2026-08-01", "葬送のフリーレン音樂會 at パシフィコ横浜 国立大ホール (鍾鄭)", [
+  mapsAction("國立大廳", "パシフィコ横浜 国立大ホール"),
+  officialAction("官方演出資訊", officialLinks.frierenConcert),
+]);
+
+register("2026-08-01", "前往成田機場哭著回家", [
   mapsAction("成田第一航廈", "成田国際空港 第1ターミナル"),
   officialAction("機場交通", officialLinks.naritaAccess),
 ]);
 
 register("2026-08-01", "MM627", [
-  copyAction("複製航班", "MM627 · NRT → TPE"),
+  copyAction("複製航班", "MM627 · 8/1 22:15 NRT → 8/2 01:00 TPE"),
   mapsAction("成田第一航廈", "成田国際空港 第1ターミナル"),
 ]);
 
