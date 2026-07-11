@@ -411,6 +411,14 @@ input:focus-visible,
   line-height: 1.25;
 }
 
+.day-summary {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
 .day-badges,
 .badge-row,
 .event-meta {
@@ -463,8 +471,46 @@ input:focus-visible,
   line-height: 1.5;
 }
 
+.day-note > svg {
+  flex: 0 0 auto;
+  margin-top: 3px;
+}
+
+.day-note-list {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.day-note-item {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 8px;
+}
+
 .day-note p {
   margin: 0;
+}
+
+.note-kind-label,
+.context-badge {
+  display: inline-flex;
+  min-height: 22px;
+  align-items: center;
+  padding: 3px 7px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.note-kind-label {
+  flex: 0 0 auto;
+  border: 1px solid #e7d5b9;
+  color: #76572d;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .event-list {
@@ -550,6 +596,24 @@ input:focus-visible,
   font-size: 11px;
   font-weight: 900;
   line-height: 1;
+}
+
+.group-badge {
+  border: 1px solid #d8e4e6;
+  color: #3f6670;
+  background: #f1f7f8;
+}
+
+.event-option-badge {
+  border: 1px solid #ead9a8;
+  color: #7a5d16;
+  background: #fff9e8;
+}
+
+.event-tentative-badge {
+  border: 1px solid #ddd7eb;
+  color: #645581;
+  background: #f7f4fb;
 }
 
 .event-highlight {
@@ -1225,6 +1289,14 @@ input:focus-visible,
 
   .day-title-block h2 {
     font-size: 1.2rem;
+  }
+
+  .day-summary {
+    font-size: 12px;
+  }
+
+  .day-note-item {
+    align-items: flex-start;
   }
 
   .event-card {

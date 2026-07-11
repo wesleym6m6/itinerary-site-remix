@@ -3,16 +3,20 @@ import {
   ArrowLeft,
   ArrowRight,
   BedDouble,
+  BusFront,
   CalendarDays,
   Camera,
   Check,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  Coffee,
   Info,
   ClipboardCheck,
   Copy,
   ExternalLink,
+  Footprints,
+  GitBranch,
   Hotel,
   JapaneseYen,
   Leaf,
@@ -25,6 +29,8 @@ import {
   RotateCcw,
   Route,
   ShoppingBag,
+  Sun,
+  Ticket,
   TicketCheck,
   Train,
   Utensils,
@@ -70,6 +76,19 @@ const typeIcons = {
   tip: Info,
 };
 
+const noteKindLabels = {
+  people: "同行",
+  ticket: "票券",
+  arrival: "抵達",
+  todo: "待辦",
+  unscheduled: "未排時段",
+};
+
+const eventStatusLabels = {
+  option: "選項",
+  tentative: "暫定",
+};
+
 const legacyIcons = {
   "fa-plane": Plane,
   "fa-hotel": Hotel,
@@ -85,6 +104,12 @@ const legacyIcons = {
   "fa-bed": BedDouble,
   "fa-yen-sign": JapaneseYen,
   "fa-route": Route,
+  "fa-bus": BusFront,
+  "fa-code-branch": GitBranch,
+  "fa-person-running": Footprints,
+  "fa-mug-hot": Coffee,
+  "fa-ticket": Ticket,
+  "fa-sun": Sun,
 };
 
 const packingCategories = [
@@ -148,12 +173,22 @@ function shiftDate(date, amount) {
 }
 
 function parseEventSlot(time) {
-  const match = String(time).match(/^(\d{2}):(\d{2})[–~](\d{2}):(\d{2})$/);
+  const match = String(time).match(/^(\d{1,2}):(\d{2})\s*[–~-]\s*(\d{1,2}):(\d{2})$/);
   if (!match) return null;
+  const start = Number(match[1]) * 60 + Number(match[2]);
+  let end = Number(match[3]) * 60 + Number(match[4]);
+  if (end < start) end += 24 * 60;
   return {
-    start: Number(match[1]) * 60 + Number(match[2]),
-    end: Number(match[3]) * 60 + Number(match[4]),
+    start,
+    end,
   };
+}
+
+function getEventActiveSlot(event) {
+  if (Object.prototype.hasOwnProperty.call(event, "activeTime")) {
+    return event.activeTime == null ? null : parseEventSlot(event.activeTime);
+  }
+  return parseEventSlot(event.time) || parseEventSlot(event.slot);
 }
 
 function getOperationalDay(now = new Date()) {
@@ -161,7 +196,7 @@ function getOperationalDay(now = new Date()) {
   if (parts.hour >= 5) return parts.date;
   const previousDate = shiftDate(parts.date, -1);
   const previousDay = itineraryDays.find((day) => day.date === previousDate);
-  const hasLateEvent = previousDay?.events.some((event) => (parseEventSlot(event.time)?.end || 0) > 24 * 60);
+  const hasLateEvent = previousDay?.events.some((event) => (getEventActiveSlot(event)?.end || 0) > 24 * 60);
   return hasLateEvent ? previousDate : parts.date;
 }
 
@@ -204,14 +239,23 @@ function formatEventTime(time) {
   const slot = parseEventSlot(time);
   if (!slot) return time;
   const display = (minutes) => {
-    const normalized = minutes - 24 * 60;
+    const normalized = ((minutes % (24 * 60)) + (24 * 60)) % (24 * 60);
     return `${String(Math.floor(normalized / 60)).padStart(2, "0")}:${String(normalized % 60).padStart(2, "0")}`;
   };
   if (slot.start < 24 * 60 && slot.end >= 24 * 60) {
-    return `時段 ${time.slice(0, 5)}–翌日 ${display(slot.end)}`;
+    return `時段 ${display(slot.start)}–翌日 ${display(slot.end)}`;
   }
   if (slot.start < 24 * 60) return `時段 ${time}`;
   return `翌日 ${display(slot.start)}–${display(slot.end)}`;
+}
+
+function normalizeDayNote(note) {
+  if (typeof note === "string") return { text: note, kind: "" };
+  if (!note || typeof note !== "object") return { text: "", kind: "" };
+  return {
+    text: note.text || "",
+    kind: noteKindLabels[note.kind] || note.kind || "",
+  };
 }
 
 function formatDateLabel(date) {
@@ -343,7 +387,7 @@ function DateNav({ currentIndex, onChange, todayIndex }) {
           return (
             <button
               aria-current={currentIndex === index ? "date" : undefined}
-              aria-label={`${day.dateLabel} ${day.weekdayLabel} ${day.title}`}
+              aria-label={`${day.dateLabel} ${day.weekdayLabel} ${day.sheetLabel || day.title}${day.title && day.title !== day.sheetLabel ? `，${day.title}` : ""}`}
               className={cx("date-pill", currentIndex === index && "active", todayIndex === index && "today")}
               key={day.date}
               onClick={() => onChange(index)}
@@ -432,15 +476,16 @@ function ActionButtons({ actions, title }) {
   );
 }
 
-function EventCard({ date, event, status, index }) {
+function EventCard({ date, event, scheduleStatus, index }) {
   const [isOpen, setIsOpen] = useState(false);
   const type = event.type || "story";
   const extraBadges = event.badges?.filter((badge) => badge.cls !== type && badge.text !== typeLabels[type]);
   const actions = getEventActions(date, event.title);
   const tipId = `tip-${date}-${index}`;
+  const eventStatusLabel = eventStatusLabels[event.status];
 
   return (
-    <article className={cx("event-card", `card-${type}`, status && "event-highlight")}>
+    <article className={cx("event-card", `card-${type}`, scheduleStatus && "event-highlight")}>
       <div className="event-main">
         <div className={cx("event-icon", `text-${type}`)}>
           <AppIcon name={event.icon} type={type} size={19} />
@@ -449,7 +494,9 @@ function EventCard({ date, event, status, index }) {
           <div className="event-meta">
             <span className={cx("event-time", `text-${type}`)}>{formatEventTime(event.time)}</span>
             <span className={cx("badge-pill", `badge-${type}`)}>{typeLabels[type] || "行程"}</span>
-            {status ? <span className="status-badge">{status}</span> : null}
+            {event.group ? <span className="context-badge group-badge">{event.group}</span> : null}
+            {eventStatusLabel ? <span className={cx("context-badge", `event-${event.status}-badge`)}>{eventStatusLabel}</span> : null}
+            {scheduleStatus ? <span className="status-badge">{scheduleStatus}</span> : null}
           </div>
           <h3>{event.title}</h3>
           {event.desc ? <p className="event-desc"><TextWithEmphasis text={event.desc} /></p> : null}
@@ -496,7 +543,7 @@ function DayCard({ currentIndex, now, onChange }) {
   const activeIndexes = new Set();
   const nextIndexes = new Set();
   if (day.date === operationalDay) {
-    const slots = events.map((event) => parseEventSlot(event.time));
+    const slots = events.map(getEventActiveSlot);
     slots.forEach((slot, index) => {
       if (slot && slot.start <= operationalMinutes && operationalMinutes < slot.end) {
         activeIndexes.add(index);
@@ -531,7 +578,8 @@ function DayCard({ currentIndex, now, onChange }) {
               <span className="weather-badge"><BedDouble aria-hidden="true" size={13} />{day.accommodation}</span>
             ) : null}
           </div>
-          <h2>{day.title}</h2>
+          <h2>{day.sheetLabel || day.title}</h2>
+          {day.title && day.title !== day.sheetLabel ? <p className="day-summary">{day.title}</p> : null}
           <ActionButtons actions={accommodationActions} title={day.accommodation} />
         </div>
       </div>
@@ -539,7 +587,18 @@ function DayCard({ currentIndex, now, onChange }) {
       {day.notes.length ? (
         <div className="day-note">
           <Info aria-hidden="true" size={17} />
-          <div>{day.notes.map((note) => <p key={note}>{note}</p>)}</div>
+          <div className="day-note-list">
+            {day.notes.map((sourceNote, index) => {
+              const note = normalizeDayNote(sourceNote);
+              if (!note.text) return null;
+              return (
+                <div className="day-note-item" key={`${note.kind}-${note.text}-${index}`}>
+                  {note.kind ? <span className="note-kind-label">{note.kind}</span> : null}
+                  <p>{note.text}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       ) : null}
 
@@ -550,7 +609,7 @@ function DayCard({ currentIndex, now, onChange }) {
             event={event}
             index={index}
             key={`${event.time}-${event.title}`}
-            status={activeIndexes.has(index) ? "目前排程" : nextIndexes.has(index) ? "接下來" : null}
+            scheduleStatus={activeIndexes.has(index) ? "目前排程" : nextIndexes.has(index) ? "接下來" : null}
           />
         ))}
       </div>

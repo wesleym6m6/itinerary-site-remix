@@ -88,11 +88,11 @@ registerMany(
   crystalInnActions,
 );
 
-register("2026-07-23", "東京駅集合寄物 & 支線任務：跟曼達快閃見面 (約在八重洲Public)", [
+register("2026-07-23", "東京駅集合、寄物", [
   mapsAction("東京車站", "東京駅"),
 ]);
 
-register("2026-07-23", "12:40~13:56 Toki321号 ¥6700", [
+register("2026-07-23", "Toki321号", [
   copyAction("複製車次", "Toki 321 · 12:40–13:56"),
   mapsAction("越後湯澤站", "越後湯沢駅"),
 ]);
@@ -101,9 +101,17 @@ register("2026-07-23", "補給@越後湯沢駅", [
   mapsAction("越後湯澤站", "越後湯沢駅"),
 ]);
 
-register("2026-07-23", "前往苗場：公車 (15:30湯澤~16:07苗場線 ¥700) or 官方接駁車 (¥2000)", [
+register("2026-07-23", "前往苗場：公車", [
   mapsAction("巴士乘車處", "越後湯沢駅 東口 バス乗り場"),
+]);
+
+register("2026-07-23", "前往苗場：官方接駁車", [
   officialAction("官方接駁", officialLinks.fujiAccess),
+]);
+
+register("2026-07-23", "官方周邊開賣", [
+  mapsAction("苗場會場", "苗場スキー場"),
+  officialAction("官方商品資訊", officialLinks.fujiGoods),
 ]);
 
 register("2026-07-23", "前夜祭", [
@@ -145,42 +153,53 @@ register("2026-07-27", "接駁車前往越後湯沢駅", [
   officialAction("接駁資訊", officialLinks.fujiAccess),
 ]);
 
-register("2026-07-27", "Toyota Rent-A-Car 租車與越後妻有藝術祭路線", [
+register("2026-07-27", "越後湯澤／十日町自駕路線", [
   mapsAction("Toyota 租車", "トヨタレンタカー 越後湯沢駅前店"),
   officialAction("官方一日自駕範例", officialLinks.echigoDrive),
   officialAction("2026 共通票", officialLinks.echigoPass),
 ]);
 
-register("2026-07-27", "19:05~20:12 Toki338 ¥6700", [
+register("2026-07-27", "Toki338", [
   copyAction("複製車次", "Toki 338 · 19:05–20:12"),
   mapsAction("越後湯澤站", "越後湯沢駅"),
 ]);
 
-register("2026-07-27", "轉京濱東北線到蒲田 or", [
+register("2026-07-27", "轉京濱東北線到蒲田", [
   mapsAction("蒲田站", "蒲田駅"),
+]);
+
+register("2026-07-27", "轉京急本線到京急蒲田", [
   mapsAction("京急蒲田站", "京急蒲田駅"),
 ]);
 
-register("2026-07-28", "前往ASICS RUN (~35min)", [
+register("2026-07-28", "前往ASICS RUN", [
   mapsAction("ASICS RUN", "ASICS RUN TOKYO MARUNOUCHI"),
   officialAction("官方資訊", officialLinks.asicsRun),
 ]);
 
-register("2026-07-28", "皇居慢跑 & 加油打氣組旁邊喝咖啡", [
+registerMany([
+  ["2026-07-28", "皇居慢跑"],
+  ["2026-07-28", "旁邊喝咖啡"],
+], [
   mapsAction("皇居外苑", "皇居外苑"),
 ]);
 
-register("2026-07-28", "10:00~11:15 皇居參觀 @桔梗門", [
+register("2026-07-28", "領皇居參觀整理券", [
   mapsAction("桔梗門", "皇居 桔梗門"),
   officialAction("參觀規則", officialLinks.imperialPalace),
 ]);
 
-register("2026-07-28", "東京國立近代美術館", [
+register("2026-07-28", "皇居參觀 @桔梗門", [
+  mapsAction("桔梗門", "皇居 桔梗門"),
+  officialAction("參觀規則", officialLinks.imperialPalace),
+]);
+
+register("2026-07-28", "杉本博司－絕滅寫真", [
   mapsAction("美術館地圖", "東京国立近代美術館"),
   officialAction("展覽資訊", officialLinks.momatExhibition),
 ]);
 
-register("2026-07-29", "京急本線到逗子・葉山站 (~1hr)", [
+register("2026-07-29", "京急本線到逗子・葉山站", [
   mapsAction("逗子・葉山站", "逗子・葉山駅"),
   officialAction("女子旅套票", officialLinks.hayamaTicket),
 ]);
@@ -217,7 +236,7 @@ registerMany([
 
 register("2026-07-30", "Day2組出發橫濱體育館", yokohamaArenaActions);
 
-register("2026-07-31", "晚餐 & 彭温前往晴空塔", [
+register("2026-07-31", "彭・温前往晴空塔", [
   mapsAction("東京晴空塔", "東京スカイツリー"),
 ]);
 
@@ -226,12 +245,12 @@ register("2026-07-31", "Regal Lily \"LIVE in the DARK\" at Konica Minolta Planet
   officialAction("官方演出資訊", officialLinks.planetariumTenku),
 ]);
 
-register("2026-08-01", "11:00 Miyoshi Rug", [
+register("2026-08-01", "Miyoshi Rug", [
   mapsAction("EVANS 白金台", "EVANS 白金台 MIYOSHI RUG"),
   officialAction("來店資訊", officialLinks.miyoshiStore),
 ]);
 
-register("2026-08-01", "葬送のフリーレン音樂會 at パシフィコ横浜 国立大ホール (鍾鄭)", [
+register("2026-08-01", "葬送のフリーレン音樂會 at パシフィコ横浜 国立大ホール", [
   mapsAction("國立大廳", "パシフィコ横浜 国立大ホール"),
   officialAction("官方演出資訊", officialLinks.frierenConcert),
 ]);
@@ -249,4 +268,11 @@ register("2026-08-01", "MM627", [
 export function getEventActions(date, title) {
   if (typeof date !== "string" || typeof title !== "string") return [];
   return actionsByEvent.get(`${date}\u0000${title}`) || [];
+}
+
+export function getEventActionKeys() {
+  return [...actionsByEvent.keys()].map((key) => {
+    const [date, title] = key.split("\u0000");
+    return { date, title };
+  });
 }

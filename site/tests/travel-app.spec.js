@@ -34,7 +34,7 @@ test.describe("travel-first mobile itinerary", () => {
   test("opens the current Tokyo trip day", async ({ page }) => {
     await openApp(page);
 
-    await expect(dayHeading(page, "Yorushika 橫濱演出日")).toBeVisible();
+    await expect(dayHeading(page, "Yorushika")).toBeVisible();
     await expect(page.locator(".date-pill.active")).toContainText("29");
   });
 
@@ -42,14 +42,14 @@ test.describe("travel-first mobile itinerary", () => {
     await useFixedDate(page, "2026-07-24T01:00:00+09:00");
     await page.goto("/", { waitUntil: "networkidle" });
 
-    await expect(dayHeading(page, "東京集合・前往苗場")).toBeVisible();
+    await expect(dayHeading(page, "前夜祭")).toBeVisible();
     await expect(page.locator(".date-pill.active")).toContainText("23");
   });
 
   test("a valid date hash overrides the current Tokyo date", async ({ page }) => {
     await openApp(page, "/#2026-07-31");
 
-    await expect(dayHeading(page, "東京最後採買與夜間演出")).toBeVisible();
+    await expect(dayHeading(page, "東京")).toBeVisible();
     await expect(page.locator(".date-pill.active")).toContainText("31");
   });
 
@@ -59,7 +59,7 @@ test.describe("travel-first mobile itinerary", () => {
     await page.locator(".date-pill").filter({ hasText: "31" }).click();
 
     await expect(page).toHaveURL(/#2026-07-31$/);
-    await expect(dayHeading(page, "東京最後採買與夜間演出")).toBeVisible();
+    await expect(dayHeading(page, "東京")).toBeVisible();
   });
 
   test("keeps the four primary tabs inside the mobile viewport", async ({ page }) => {
@@ -108,18 +108,28 @@ test.describe("travel-first mobile itinerary", () => {
     await performance.scrollIntoViewIfNeeded();
     await performance.getByRole("button", { name: /查看.*Regal Lily.*行程/ }).click();
 
-    const heading = dayHeading(page, "東京最後採買與夜間演出");
+    const heading = dayHeading(page, "東京");
     await expect(heading).toBeVisible();
     await expect(heading).toBeInViewport({ ratio: 1 });
   });
 
-  test("booking summary retains the MM860 schedule and flight description", async ({ page }) => {
+  test("booking summary uses the exact MM860 schedule instead of the Sheet slot", async ({ page }) => {
     await openApp(page);
     await page.getByRole("button", { name: "票券與訂位", exact: true }).click();
 
     const booking = page.locator("article").filter({ hasText: "MM860" }).first();
-    await expect(booking).toContainText("20:00–翌日 00:00");
+    await expect(booking).toContainText("時段 20:25–翌日 00:45");
     await expect(booking).toContainText("20:25 TPE - 00:45 HND");
+  });
+
+  test("keeps MM860 active after midnight until its actual arrival", async ({ page }) => {
+    await useFixedDate(page, "2026-07-23T00:30:00+09:00");
+    await page.goto("/#2026-07-22", { waitUntil: "networkidle" });
+
+    const flight = page.locator("article").filter({ hasText: "MM860" });
+    const taxi = page.locator("article").filter({ hasText: "計程車前往check in" });
+    await expect(flight).toContainText("目前排程");
+    await expect(taxi).not.toContainText("目前排程");
   });
 
   test("groups consecutive hotel nights into compact stay ranges", async ({ page }) => {
@@ -141,16 +151,16 @@ test.describe("travel-first mobile itinerary", () => {
     const yorushika = page.locator("article").filter({ hasText: "Yorushika「一人称」" });
     await expect(yorushika).toHaveCount(2);
     await expect(yorushika.nth(0)).toContainText("7月29日");
-    await expect(yorushika.nth(0)).toContainText("Day1組: 鍾+鄭、陳弟+陳、芳宜+A");
+    await expect(yorushika.nth(0)).toContainText("鍾+鄭、陳弟+陳、芳宜+A");
     await expect(yorushika.nth(0)).not.toContainText("Day2組");
     await expect(yorushika.nth(1)).toContainText("7月30日");
-    await expect(yorushika.nth(1)).toContainText("Day2組: 鍾+B、陳弟+C");
+    await expect(yorushika.nth(1)).toContainText("鍾+B、陳弟+C");
     await expect(yorushika.nth(1)).not.toContainText("Day1組");
     await expect(yorushika.nth(1).getByRole("link", { name: /演出與票券/ })).toBeVisible();
 
     const frieren = page.locator("article").filter({ hasText: "葬送のフリーレン音樂會" });
     await expect(frieren).toContainText("8月1日");
-    await expect(frieren).toContainText("11:30 Open 13:00 Start");
+    await expect(frieren).toContainText("11:30 Open · 13:00 Start");
     await expect(frieren.getByRole("link", { name: /國立大廳/ })).toBeVisible();
   });
 
@@ -160,25 +170,36 @@ test.describe("travel-first mobile itinerary", () => {
     const festival = page.locator("article").filter({ hasText: "富搖D1" });
     await expect(festival).toContainText("全日");
     await expect(festival).toContainText("藝人周邊 & 官方周邊 8:00 開賣");
-    await expect(festival).toContainText("Fujii Kaze × Fuji Rock 聯名周邊 10:00 開賣");
+    await expect(festival).toContainText("Fujii Kaze周邊 10:00 開賣");
     await expect(festival).not.toContainText("07:00–08:00");
     await expect(festival.getByRole("link", { name: /官方商品資訊/ })).toBeVisible();
   });
 
   test("shows owner-confirmed palace and Miyoshi states without conflicting instructions", async ({ page }) => {
     await openApp(page, "/#2026-07-28");
-    const palace = page.locator("article").filter({ hasText: "皇居參觀" });
-    await expect(palace).toContainText("陳：當日9點發整理券");
+    const palaceTicket = page.locator("article").filter({ hasText: "領皇居參觀整理券" });
+    await expect(palaceTicket).toContainText("陳");
+    await expect(palaceTicket).toContainText("當日9點發整理券");
 
     await page.goto("/#2026-08-01", { waitUntil: "networkidle" });
-    const miyoshi = page.locator("article").filter({ hasText: "11:00 Miyoshi Rug" });
+    const miyoshi = page.locator("article").filter({ hasText: "Miyoshi Rug" });
+    await expect(miyoshi).toContainText("11:00");
     await expect(miyoshi).toContainText("已預約");
     await expect(miyoshi.getByRole("link", { name: /來店資訊/ })).toBeVisible();
     await expect(miyoshi).not.toContainText("來店預約");
 
     await page.getByRole("button", { name: "票券與訂位", exact: true }).click();
-    const booking = page.locator("article").filter({ hasText: "11:00 Miyoshi Rug" });
+    const booking = page.locator("article").filter({ hasText: "Miyoshi Rug" });
     await expect(booking).toContainText("已預約");
+  });
+
+  test("shows Frieren as the current grouped schedule from its 11:30 opening", async ({ page }) => {
+    await useFixedDate(page, "2026-08-01T11:40:00+09:00");
+    await page.goto("/#2026-08-01", { waitUntil: "networkidle" });
+
+    const frieren = page.locator("article").filter({ hasText: "葬送のフリーレン音樂會" });
+    await expect(frieren).toContainText("鍾鄭");
+    await expect(frieren).toContainText("目前排程");
   });
 
   test("uses the confirmed MM627 summer time and earlier Narita departure", async ({ page }) => {
@@ -188,7 +209,8 @@ test.describe("travel-first mobile itinerary", () => {
     await expect(airport).toContainText("19:00–22:00");
 
     const flight = page.locator("article").filter({ hasText: "MM627" });
-    await expect(flight).toContainText("22:15 NRT - 8/2 01:00 TPE");
+    await expect(flight).toContainText("時段 22:15–翌日 01:00");
+    await expect(flight).toContainText("NRT - 8/2 01:00 TPE");
     await expect(flight).not.toContainText("22:10");
   });
 
@@ -202,10 +224,32 @@ test.describe("travel-first mobile itinerary", () => {
     await expect(freeTime).toContainText("目前排程");
   });
 
+  test("keeps both Imperial Palace groups and the ticket route active", async ({ page }) => {
+    await useFixedDate(page, "2026-07-28T09:05:00+09:00");
+    await page.goto("/#2026-07-28", { waitUntil: "networkidle" });
+
+    for (const title of ["皇居慢跑", "旁邊喝咖啡", "領皇居參觀整理券"]) {
+      const event = page.locator("article").filter({ hasText: title });
+      await expect(event).toContainText("目前排程");
+    }
+  });
+
+  test("keeps the Day1 and tentative Day2 sunset branches parallel", async ({ page }) => {
+    await useFixedDate(page, "2026-07-29T15:30:00+09:00");
+    await page.goto("/#2026-07-29", { waitUntil: "networkidle" });
+
+    const day1 = page.locator("article").filter({ hasText: "Day1組出發橫濱體育館" });
+    const day2 = page.locator("article").filter({ hasText: "Day2組看要不要看夕陽" });
+    await expect(day1).toContainText("目前排程");
+    await expect(day2).toContainText("目前排程");
+    await expect(day2).toContainText("暫定");
+  });
+
   test("keeps the corrected Zushi-Hayama station name from regressing", async ({ page }) => {
     await openApp(page);
 
-    await expect(page.getByText("京急本線到逗子・葉山站 (~1hr)")).toBeVisible();
+    const station = page.locator("article").filter({ hasText: "京急本線到逗子・葉山站" });
+    await expect(station).toContainText("約 1 小時");
     await expect(page.locator("body")).not.toContainText("逗子•業山站");
   });
 
@@ -231,7 +275,7 @@ test.describe("travel-first mobile itinerary", () => {
   test("recovers from a malformed shared-date hash", async ({ page }) => {
     await openApp(page, "/#%");
 
-    await expect(dayHeading(page, "Yorushika 橫濱演出日")).toBeVisible();
+    await expect(dayHeading(page, "Yorushika")).toBeVisible();
     await expect(page).toHaveURL(/#2026-07-29$/);
   });
 
@@ -246,7 +290,7 @@ test.describe("travel-first mobile itinerary", () => {
   test("opens authored reservation details", async ({ page }) => {
     await openApp(page, "/#2026-07-27");
 
-    const route = page.locator("article").filter({ hasText: "Toyota Rent-A-Car 租車與越後妻有藝術祭路線" });
+    const route = page.locator("article").filter({ hasText: "越後湯澤／十日町自駕路線" });
     const toggle = route.getByRole("button", { name: "訂單與確認資訊" });
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
     await toggle.click();

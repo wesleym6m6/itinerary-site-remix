@@ -1,4 +1,4 @@
-const CACHE_VERSION = "itinerary-site-remix-v4";
+const CACHE_VERSION = "itinerary-site-remix-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
